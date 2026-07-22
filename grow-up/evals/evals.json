@@ -1,0 +1,29 @@
+{
+  "skill_name": "grow-up",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I just realized: we shipped a feature with beautiful styling but zero click handlers. The room cards looked clickable but did nothing when you tapped them. Root cause: I treated the visual design as complete without checking that interactive elements had backing behavior. This happened in Room Finder and cost us in usability. Can you analyze why this happened and prevent it from happening again?",
+      "expected_output": "Skill should: 1) Identify root cause (false affordance pattern - styling without behavior), 2) Recognize this is systemic (could happen to any interactive element), 3) Create/update guards (semantic HTML rule, test requirement for click handlers, dev guard), 4) Create skill or update CLAUDE.md with false affordance pattern prevention, 5) Commit with clear message explaining the learning",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "I made a mistake twice now: forgot to add work to the wishlist before starting implementation. First time: docs. Second time: a feature branch. Both times backlog diverged from actual work, teammates couldn't see progress. Root causes: (1) Mental model - treated items as outputs not work, (2) No pre-flight automation, (3) Wishlist wasn't my first instinct. How do I prevent this from being a three-time mistake?",
+      "expected_output": "Skill should: 1) Recognize repeated pattern (escalate prevention), 2) Analyze both root causes (mental model + missing automation), 3) Create skill with pre-work checklist AND update to be pushy/aggressive, 4) Update CLAUDE.md with formalized rule, 5) Consider adding pre-commit hook to catch violations, 6) Commit with message noting this is escalated prevention (third occurrence would trigger automation)",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "My performance tests passed locally but failed on 3G throttle in production. Root cause: I benchmarked on fast network, didn't throttle. This broke our mobile-first strategy because we couldn't verify LCP targets. Similar issue: we don't have automated performance checks in CI/CD. How do I make sure performance regressions are caught before they ship?",
+      "expected_output": "Skill should: 1) Identify root cause (missing automation + environment mismatch), 2) Recognize this affects all projects (not project-specific), 3) Recommend config fix (add CI/CD performance check with throttle), 4) Optionally create skill (performance testing best practices), 5) Update CLAUDE.md with performance testing rule, 6) Automate the fix in CI/CD, 7) Commit explaining the prevention",
+      "files": []
+    },
+    {
+      "id": 4,
+      "prompt": "User asked: 'Why did this test pass but the feature doesn't work?' Root cause: I mocked the API response, but the real API returns different data structure. The test was valid but didn't catch the real-world breakage. This is a general pattern: mocks can hide integration bugs. How do I prevent tests from being false positives?",
+      "expected_output": "Skill should: 1) Identify root cause (mocks decouple from reality, tests become false positives), 2) Recognize this is cross-project (not RoomSense-specific), 3) Create or update skill (testing best practices with real data), 4) Update CLAUDE.md with testing conventions (use non-ASCII fixtures, real data, edge cases), 5) Suggest guards (linting, documentation), 6) Optionally update CI/CD to require integration test coverage, 7) Commit explaining the learning",
+      "files": []
+    }
+  ]
+}

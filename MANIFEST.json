@@ -1,0 +1,50 @@
+{
+  "repository": "https://github.com/YOUR_ACCOUNT/claude-skills",
+  "description": "Shared skills library for Claude, Hermes, and other agents",
+  "version": "1.0.0",
+  "last_updated": "2026-07-22",
+  "skills": [
+    {
+      "name": "roomsense-wishlist-first",
+      "version": "1.0.0",
+      "category": "process",
+      "scope": ["roomsense"],
+      "description": "Enforce wishlist-first discipline for RoomSense backlog management",
+      "path": "roomsense-wishlist-first/",
+      "triggers": ["starting work", "reviewing commits", "backlog management"],
+      "created": "2026-07-22",
+      "last_updated": "2026-07-22",
+      "status": "stable"
+    },
+    {
+      "name": "grow-up",
+      "version": "1.0.0",
+      "category": "meta",
+      "scope": ["all"],
+      "description": "Turn problems into permanent improvements via root cause analysis and automation",
+      "path": "grow-up/",
+      "triggers": ["something breaks", "mistake happens", "pattern fails", "prevent recurrence"],
+      "created": "2026-07-22",
+      "last_updated": "2026-07-22",
+      "status": "stable"
+    },
+    {
+      "name": "sync-skills",
+      "version": "1.0.0",
+      "category": "maintenance",
+      "scope": ["all"],
+      "description": "Keep your local skills repo updated from GitHub",
+      "path": "sync-skills/",
+      "triggers": ["before using skills", "want latest versions", "keep in sync"],
+      "created": "2026-07-22",
+      "last_updated": "2026-07-22",
+      "status": "stable"
+    }
+  ],
+  "versions": {
+    "1.0.0": {
+      "date": "2026-07-22",
+      "changes": "Initial release: roomsense-wishlist-first, grow-up, sync-skills"
+    }
+  }
+}
