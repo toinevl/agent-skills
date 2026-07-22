@@ -27,8 +27,8 @@ Use this skill to ensure you're always using the latest, most improved versions 
 "Can you use sync-skills to update the skills?"
 
 sync-skills will:
-1. Check if ~/claude-skills exists
-2. If not: Clone https://github.com/YOUR_ACCOUNT/claude-skills
+1. Check if ~/agent-skills exists
+2. If not: Clone https://github.com/YOUR_ACCOUNT/agent-skills
 3. If yes: Pull latest from GitHub
 4. Show changelog (new skills, updates, fixes)
 5. List all available skills
@@ -40,7 +40,7 @@ sync-skills will:
 ```
 (You brief Hermes)
 "Clone the skills repo and use sync-skills to keep it fresh.
-Skills repo: https://github.com/YOUR_ACCOUNT/claude-skills"
+Skills repo: https://github.com/YOUR_ACCOUNT/agent-skills"
 
 (Hermes)
 1. Clones the repo to its workspace
@@ -149,7 +149,7 @@ You: Have latest tools available
 
 ```bash
 # Claude can run this directly
-cd ~/claude-skills && git pull origin main
+cd ~/agent-skills && git pull origin main
 
 # Or use the skill
 "Use sync-skills to check for updates"
@@ -159,17 +159,17 @@ cd ~/claude-skills && git pull origin main
 
 ```bash
 # Show what version you have
-cd ~/claude-skills && cat MANIFEST.json | grep '"version"'
+cd ~/agent-skills && cat MANIFEST.json | grep '"version"'
 
 # Show when it was last updated
-cd ~/claude-skills && git log -1 --format="%ai" README.md
+cd ~/agent-skills && git log -1 --format="%ai" README.md
 ```
 
 ### View Changelog
 
 ```bash
 # Show recent commits to the repo
-cd ~/claude-skills && git log --oneline -10
+cd ~/agent-skills && git log --oneline -10
 ```
 
 ---
@@ -180,17 +180,17 @@ cd ~/claude-skills && git log --oneline -10
 
 ```bash
 # Clone the repo once
-git clone https://github.com/YOUR_ACCOUNT/claude-skills ~/claude-skills
+git clone https://github.com/YOUR_ACCOUNT/agent-skills ~/agent-skills
 
 # From then on, sync-skills keeps it fresh
-# Or manually: cd ~/claude-skills && git pull
+# Or manually: cd ~/agent-skills && git pull
 ```
 
 ### For Hermes (When You Brief Them)
 
 ```
 (You to Hermes)
-"Clone the skills repo: https://github.com/YOUR_ACCOUNT/claude-skills
+"Clone the skills repo: https://github.com/YOUR_ACCOUNT/agent-skills
 Then use sync-skills before you start working."
 
 (Hermes)
@@ -251,15 +251,15 @@ If you're on 1.1.0 and 1.2.0 is available, sync-skills will:
 
 Check internet connection and repo URL:
 ```bash
-cd ~/claude-skills && git remote -v
-# Should show: origin https://github.com/YOUR_ACCOUNT/claude-skills (fetch/push)
+cd ~/agent-skills && git remote -v
+# Should show: origin https://github.com/YOUR_ACCOUNT/agent-skills (fetch/push)
 ```
 
 ### "Local changes would be overwritten"
 
 If you've modified a skill locally and can't pull:
 ```bash
-cd ~/claude-skills && git stash
+cd ~/agent-skills && git stash
 # Then sync-skills will pull cleanly
 ```
 
@@ -267,7 +267,7 @@ cd ~/claude-skills && git stash
 
 Verify all skills are intact:
 ```bash
-cd ~/claude-skills && ls -la
+cd ~/agent-skills && ls -la
 # Should see: roomsense-wishlist-first/, grow-up/, sync-skills/, etc.
 
 # Check MANIFEST
@@ -314,7 +314,7 @@ This ensures:
 
 ## References
 
-- **Repo:** https://github.com/YOUR_ACCOUNT/claude-skills
+- **Repo:** https://github.com/YOUR_ACCOUNT/agent-skills
 - **MANIFEST:** See `MANIFEST.json` for skill registry
 - **Version history:** See `MANIFEST.json` versions section
 - **Changelog:** Run `git log` in skills repo

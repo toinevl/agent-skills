@@ -1,8 +1,8 @@
-# Claude Skills Library
+# Agent Skills Library
 
 Reusable skills for Claude, Hermes, and other agents. Each skill automates a specific workflow or pattern.
 
-**Repository:** `https://github.com/YOUR_ACCOUNT/claude-skills`  
+**Repository:** `https://github.com/YOUR_ACCOUNT/agent-skills`  
 **Access:** Clone and point agents to this directory  
 **Update:** Use the `sync-skills` skill to keep your local copy fresh
 
@@ -24,7 +24,7 @@ Reusable skills for Claude, Hermes, and other agents. Each skill automates a spe
 
 ```bash
 # Clone the repo
-git clone https://github.com/YOUR_ACCOUNT/claude-skills ~/claude-skills
+git clone https://github.com/YOUR_ACCOUNT/agent-skills ~/agent-skills
 
 # Use a skill
 # The skill will be available to invoke in Claude Code
@@ -35,7 +35,7 @@ git clone https://github.com/YOUR_ACCOUNT/claude-skills ~/claude-skills
 When briefing Hermes, include:
 
 ```
-Skills repo: https://github.com/YOUR_ACCOUNT/claude-skills
+Skills repo: https://github.com/YOUR_ACCOUNT/agent-skills
 
 Use the roomsense-wishlist-first skill to check if work is tracked on wishlist.
 Use the grow-up skill to analyze this problem and prevent recurrence.
