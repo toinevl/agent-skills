@@ -35,6 +35,37 @@ Root cause: the script was written from memory/plausible reasoning, not from doc
 4. **Verify output formats** — know what the command actually prints before writing a parser
 5. **Verify default states** — know what's enabled by default on a fresh install
 6. **Read community examples** — forum posts showing working commands catch what docs miss
+7. **Verify external URLs before writing them** — do a HEAD request or browse the mirror directory; never hardcode a download URL you haven't confirmed returns 200
+
+## Anti-pattern: hardcoded download URLs
+
+Scripts that download ISOs, packages, or binaries often hardcode a URL assumed to be stable. This always eventually breaks — mirrors reorganize, projects rename releases, "latest" symlinks are never created.
+
+**Bad:**
+```bash
+wget https://mirror.cachyos.org/iso/cachyos-linux-stable.iso  # 404 — path never existed
+```
+
+**Good:**
+```bash
+# Browse the mirror directory first, then write the versioned path you actually confirmed
+# https://mirror.cachyos.org/ISO/desktop/ → dated subdirs → e.g. 260628/cachyos-desktop-linux-260628.iso
+wget https://mirror.cachyos.org/ISO/desktop/260628/cachyos-desktop-linux-260628.iso
+```
+
+**Better:** write the script to browse the directory and pick the latest entry dynamically, so it doesn't need updating with each release.
+
+```bash
+# Find latest dated subdir and download from it
+BASE="https://mirror.cachyos.org/ISO/desktop"
+LATEST=$(curl -s "$BASE/" | grep -oP 'href="\K[0-9]+(?=/)' | sort -n | tail -1)
+ISO=$(curl -s "$BASE/$LATEST/" | grep -oP 'href="\K[^"]+\.iso' | head -1)
+wget "$BASE/$LATEST/$ISO"
+```
+
+**Verification rule:** before writing any URL into a script or README, run `curl -sI <url> | head -1` and confirm it returns `200` or `302`, not `404`.
+
+---
 
 ## Anti-pattern: self-referential QA
 
