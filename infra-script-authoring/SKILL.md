@@ -1,31 +1,42 @@
 ---
 name: infra-script-authoring
-description: "Author infrastructure scripts for platforms you can't test against — verify API values from docs, never guess."
-version: 1.0.0
-tags: [devops, infrastructure, proxmox, azure, aws, bash, scripting, qa]
-platforms: [linux]
+description: "Author infrastructure scripts for platforms you can't test against — verify API values from docs, never guess, ship with enterprise safety."
+version: 1.2.0
+author: Hermes Agent
+license: MIT
+tags: [devops, infra, bash, proxmox, azure, api-values, verification]
 metadata:
   hermes:
-    tags: [devops, infrastructure, scripting, qa]
+    related_skills: [enterprise-bash-scripts]
 ---
 
-# Infrastructure Script Authoring (for platforms you can't test against)
+# Infrastructure Script Authoring
+
+Write reliable infrastructure automation for platforms you cannot
+test against locally (Proxmox, VMware, Azure CLI, Kubernetes, etc.).
 
 ## When to use
-Writing bash/Python automation for infrastructure platforms (Proxmox, VMware, AWS CLI, Azure CLI, Kubernetes) when you don't have a live instance to test against.
 
-## Core principle
+- Writing bash/CLI automation against a platform API you do not have
+  live access to right now
+- Authoring scripts meant to run on a remote host (bare metal,
+  hypervisor, cloud tenant) where first-run failures are expensive
+- Building on top of `enterprise-bash-scripts` (lockfiles, rollback,
+  dry-run, retry): that skill covers the *structural* requirements.
+  This skill covers the *correctness* requirements.
 
-**Never invent API parameter values or CLI flags.** Every enum value, flag name, and parameter format must come from official documentation or a working example you've verified. A script with perfect error handling that calls a non-existent flag is worse than a naive script that works.
+## Iron rule: verify API values before writing
 
-## The lesson that created this skill
+Structural completeness (version flag, rollback, dry-run) is necessary
+but not sufficient. Bugs from invented API values ship more often than
+bugs from missing rollback code.
 
-Three bugs shipped to a Proxmox host in successive runs:
-1. `pveversion --version` — flag doesn't exist (correct: bare `pveversion`)
-2. `pvesm status --content` — filters BY content type, doesn't list types (correct: read `/etc/pve/storage.cfg`)
-3. `efitype=4k` — invalid enum (correct: `2m` or `4m`)
+For every platform API value you write:
 
-Root cause: the script was written from memory/plausible reasoning, not from docs. The grep-based QA checked "does my script contain the string I wrote" — never "is this value correct for the target platform."
+1. Look up the actual enum/syntax in official docs first
+2. Copy the valid value verbatim — do not paraphrase
+3. After the first failed run, add the correct value to a project-local
+   checklist so the next author doesn't repeat the mistake
 
 ## Pre-write checklist (mandatory)
 
@@ -53,116 +64,70 @@ wget https://mirror.cachyos.org/iso/cachyos-linux-stable.iso  # 404 — path nev
 wget https://mirror.cachyos.org/ISO/desktop/260628/cachyos-desktop-linux-260628.iso
 ```
 
-**Better:** write the script to browse the directory and pick the latest entry dynamically, so it doesn't need updating with each release.
+**Better:** write the script to browse the directory and pick the latest entry dynamically:
 
 ```bash
-# Find latest dated subdir and download from it
 BASE="https://mirror.cachyos.org/ISO/desktop"
 LATEST=$(curl -s "$BASE/" | grep -oP 'href="\K[0-9]+(?=/)' | sort -n | tail -1)
 ISO=$(curl -s "$BASE/$LATEST/" | grep -oP 'href="\K[^"]+\.iso' | head -1)
 wget "$BASE/$LATEST/$ISO"
 ```
 
-**Verification rule:** before writing any URL into a script or README, run `curl -sI <url> | head -1` and confirm it returns `200` or `302`, not `404`.
+**Verification rule:** before writing any URL into a script or README, run `curl -sI <url> | head -1` and confirm 200/302, not 404.
 
----
+## Proxmox VE checklist
 
-## Anti-pattern: self-referential QA
+For Proxmox VE `qm` / `pvesm` / `pveversion` automation, use the
+Proxmox-specific checklist:
+`enterprise-bash-scripts` → `references/proxmox-ve-authoring-checklist.md`
 
-Grep-based verification that checks "does my script contain the string I wrote" is NOT verification. It confirms you typed something, not that it's correct.
+Net rules:
 
-### Bad QA
+- `pveversion` takes no flags
+- `pvesm status --content` filters results BY content type, not the type
+  a storage supports — parse `/etc/pve/storage.cfg` instead
+- `local` storage ships WITHOUT `snippets`; append it non-destructively
+- `efitype=4m` or `efitype=2m` — there is no `4k`
+- `cicustom` must use the resolved snippet storage variable, never
+  hardcoded `local`
+- `importdisk` volume names may vary depending on disk order; parse the
+  actual volume name from import output
+
+## Terraform / IaC values
+
+For Terraform, ARM/Bicep, and other IaC patterns:
+
+1. Pull the valid argument names from the provider's own source or docs
+2. Test against a canary run with `-var-file` before committing the template
+3. Validate:
+
 ```bash
-check "has efitype" grep -q 'efitype' "$SCRIPT"
-# Passes whether the value is 4k, 4m, or banana
+terraform validate
+bicep build --file infra/main.bicep --stdout > /dev/null
 ```
 
-### Good QA
-```bash
-# Verify the value is in the documented enum set
-check "efitype is valid" grep -qE 'efitype=(2m|4m)' "$SCRIPT"
-```
+## QA discipline: correctness vs presence
 
-### Even better: simulate
-```bash
-# Feed mock command output into your parser to verify it works
-echo 'pve-manager/8.4.17/abc (running kernel: 6.8)' | grep -oP 'pve-manager/\K[0-9]+'
-# Verify output is "8"
-```
+A grep-based verification (script contains string X) proves presence,
+not correctness. Acceptable verification is one of:
 
-## Verification strategy for untestable platforms
+1. Static validation: `bash -n`, `terraform validate`, `bicep build`
+2. `--dry-run` on the target or closest equivalent host
+3. Explicit assertion checks against known-good values written in the checklist reference
 
-1. **Web-search the API docs** for every parameter value BEFORE writing the script
-2. **Cross-reference** 2+ sources (official docs + community examples) for non-obvious values
-3. **Simulate** parser logic against documented output formats
-4. **Dry-run first** — always offer `--dry-run` and tell the user to try it before the real run
-5. **Fail fast with clear errors** — when something IS wrong, the user gets actionable feedback
+Recording the lesson in docs is not enough — add an explicit assertion.
+A skill staying correct IS the discipline.
 
-## Process for fixing bugs found at runtime
+## Cross-reference with `enterprise-bash-scripts`
 
-1. Acknowledge the bug honestly (don't minimize it)
-2. Search docs for the correct value/command
-3. Fix the script
-4. Add a verification check for the SPECIFIC correct value (not just presence)
-5. Update the platform reference below if reusable
+| Concern | Covered in |
+|---------|------------|
+| Structural requirements (versioning, rollback, dry-run) | enterprise-bash-scripts |
+| Proxmox CLI values and enum traps | infra-script-authoring + Proxmox checklist |
+| Azure CLI values (FunctionApp plan types, deploy methods) | azure-functions-deploy, azure-swa-deploy |
 
----
+Load `enterprise-bash-scripts` for the structural skeleton, then load
+this skill for platform-specific correctness constraints.
 
-## Platform reference: Proxmox VE 8.x (verified values)
-
-### pveversion
-- Correct: `pveversion` (no flags)
-- NOT `pveversion --version` (that flag doesn't exist)
-- Output format: `pve-manager/8.4.17/c8c39014680186a7 (running kernel: 6.8.12-13-pve)`
-- Extract major: `pveversion | grep -oP 'pve-manager/\K[0-9]+'`
-
-### pvesm status
-- `pvesm status` — lists all storage
-- `pvesm status --storage NAME` — checks storage exists
-- `--content` FILTERS by content type — does NOT list supported types
-- To get content types: awk `/etc/pve/storage.cfg`
-- storage.cfg format:
-  ```
-  lvmthin: local-lvm
-          thinpool data
-          vgname pve
-          content images,rootdir
-  ```
-
-### qm create — efidisk
-- `efitype` accepts: `2m` or `4m` (NOT `4k`)
-- Format: `--efidisk0 STORAGE:1,efitype=4m,pre-enrolled-keys=0`
-
-### qm importdisk
-- Output contains volume key: `unused0:STORAGE:vm-VMID-disk-N`
-- Disk numbering is NOT predictable (efidisk may take disk-0)
-- Parse the output to get the real volume key, don't hardcode
-
-### Snippets storage
-- `local` storage ships WITHOUT snippets content type by default
-- Auto-fix: `pvesm set local --content EXISTING,snippets` (additive, safe)
-- Snippet directory comes from storage.cfg `path` property
-- Default path: `/var/lib/vz/snippets`
-
-### Disk space check
-- `pvesm status --storage NAME --output avail` — returns bytes available
-
----
-
-## Platform reference: Azure Functions (verified values)
-
-### Consumption (Y1/Dynamic) plan deploy
-- Deploy via `func azure functionapp publish NAME --node` (NOT `Azure/functions-action@v1`)
-- Kudu zipdeploy produces 503 "Function host is not running" on Consumption Linux
-- Deploy package must be self-contained (minimal package.json, no `workspace:*` deps, `npm install` inside)
-- `.funcignore` must NOT exclude `dist` directory
-- `WEBSITE_RUN_FROM_PACKAGE` can block zip deploys — clear it if stuck
-
-### Flex Consumption CORS
-- Flex Consumption short-circuits CORS preflights (OPTIONS) at the Kestrel front-end
-- Returns empty 204 before function code runs — function-level CORS never executes
-- Fix: use Consumption (Y1/Dynamic) plan instead
-
-### Azure Table Storage
-- No array type — serialize arrays as JSON strings, deserialize on read
-- Entity properties are limited to primitive EDM types
+**Last updated:** 2026-07-23
+**Current version:** 1.2.0

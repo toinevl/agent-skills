@@ -1,89 +1,80 @@
 ---
 name: sync-skills
-description: Keep your local skills repo and ~/.claude/skills/ updated from GitHub. Pulls latest from toinevl/agent-skills, then copies any new or updated skill folders into ~/.claude/skills/ so they are immediately available. Run at the start of every session or whenever the user says "sync skills". Triggers on: "sync skills", "update skills", "pull latest skills".
+description: "Keep your local skills repo updated from GitHub. Pull latest, copy new skills to the local install directory, show what changed, verify all skills present."
+version: 1.2.0
+tags: [skills, sync, maintenance]
+platforms: [linux, macos]
 ---
 
 # sync-skills: Keep Skills Repo and Local Install Updated
 
-## Repo
+## Purpose
 
-`https://github.com/toinevl/agent-skills` → cloned at `~/agent-skills`  
-Local install target: `~/.claude/skills/`
+Pull the latest skills from https://github.com/toinevl/agent-skills,
+install them into your local skills directory, and report what changed.
 
-**Both must be updated.** Pulling the repo without copying to `~/.claude/skills/` means the agent can't use the new skills. This is the critical step the old version of this skill omitted.
+**Critical:** pulling the repo without copying to the local skills directory means the agent can't use the new skills. Both steps are required.
 
----
+## When to use
 
-## Steps — run every time
+- At the start of a work session
+- Before using other skills from the repo
+- After someone else pushed updates to the repo
 
-**Step 1: Pull from GitHub**
-
-```bash
-cd ~/agent-skills && git pull origin main 2>&1
-```
-
-Note the output — `Already up to date` means nothing to do. Otherwise the output shows exactly which files changed.
-
-**Step 2: Identify new or updated skill folders**
-
-A skill folder is any directory containing a `SKILL.md`. Compare what pulled against what's already in `~/.claude/skills/`:
+## Execution
 
 ```bash
-# List skill folders in the repo
-ls ~/agent-skills/*/SKILL.md | xargs -I{} dirname {} | xargs -I{} basename {}
+# 1. Pull latest from the repo
+cd ~/agent-skills
+git pull origin main
 
-# List what's already installed
-ls ~/.claude/skills/
+# 2. Show recent changes
+git log --oneline -5
+
+# 3. List all skills in the repo
+find . -maxdepth 2 -name 'SKILL.md' | sort
 ```
 
-**Step 3: Copy new/updated skills to `~/.claude/skills/`**
+## Install new/updated skills
 
-For each skill folder that is new or was modified in the pull:
+After pulling, copy any new or changed skill folders to your local skills directory.
 
+**For Claude** (local skills at `~/.claude/skills/`):
 ```bash
 cp -r ~/agent-skills/<skill-name> ~/.claude/skills/<skill-name>
 ```
 
-Do this for every changed skill — `cp -r` overwrites cleanly.
-
-**Step 4: Report**
-
-Tell the user:
-- What was pulled (git output)
-- Which skills were copied to `~/.claude/skills/`
-- Current MANIFEST version (`cat ~/agent-skills/MANIFEST.json | grep '"version"' | head -1`)
-
----
-
-## Initial setup (if `~/agent-skills` doesn't exist)
-
+**For Hermes** (local skills at `~/.hermes/profiles/glm/skills/`):
 ```bash
-git clone https://github.com/toinevl/agent-skills ~/agent-skills
+# devops category skills
+cp -r ~/AI-Projects/agent-skills/<skill-name> ~/.hermes/profiles/glm/skills/devops/<skill-name>
+# top-level skills
+cp -r ~/AI-Projects/agent-skills/<skill-name> ~/.hermes/profiles/glm/skills/<skill-name>
 ```
 
-Then run Steps 2–4 above to install all skills.
+## Skill-to-category mapping (Hermes)
 
----
+| Skill | Category | Rationale |
+|-------|----------|-----------|
+| infra-script-authoring | devops | Infrastructure automation patterns |
+| azure-functions-deploy | devops | Azure Functions deployment |
+| azure-swa-deploy | devops | Static Web Apps deployment |
+| ops-infra | devops | IaC review |
+| ops-pipeline | devops | CI/CD review |
+| arch-api-design | (top-level) | Architecture, not devops |
+| arch-adr | (top-level) | Architecture |
+| arch-spec | (top-level) | Architecture |
+| check-release | (top-level) | Process |
+| grow-up | (top-level) | General workflow |
+| roomsense-wishlist-first | (top-level) | Project-specific |
+| sync-skills | (top-level) | Meta-skill |
 
-## Troubleshooting
+## Verification
 
-**"Local changes would be overwritten"**
-```bash
-cd ~/agent-skills && git stash && git pull origin main
-```
+After sync, verify all skills load:
+- Each skill has a valid `SKILL.md` with YAML frontmatter
+- No placeholder URLs (`YOUR_ACCOUNT`) remain
+- MANIFEST version: `cat ~/agent-skills/MANIFEST.json | python3 -c "import sys,json; d=json.load(sys.stdin); print(d['version'], d['last_updated'])"`
 
-**Skill not showing up after copy**  
-Verify the folder contains `SKILL.md`:
-```bash
-ls ~/.claude/skills/<skill-name>/
-```
-
-**Check current MANIFEST version**
-```bash
-cat ~/agent-skills/MANIFEST.json | python3 -c "import sys,json; d=json.load(sys.stdin); print(d['version'], d['last_updated'])"
-```
-
----
-
-**Last updated:** 2026-07-23  
-**Current version:** 1.1.0
+**Last updated:** 2026-07-23
+**Current version:** 1.2.0
