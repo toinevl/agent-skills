@@ -15,6 +15,8 @@ Reusable skills for Claude, Hermes, and other agents. Each skill automates a spe
 | **roomsense-wishlist-first** | Enforce wishlist-first discipline in RoomSense | Starting work, reviewing commits, coordinating lanes (@C, @H, @O) |
 | **grow-up** | Turn problems into permanent improvements via root cause analysis | Something breaks, a mistake happens, a pattern fails, you want to prevent recurrence |
 | **infra-script-authoring** | Author infrastructure scripts for platforms you can't test against | Writing bash/Python automation for Proxmox, Azure, AWS, K8s without a live test instance |
+| **azure-functions-deploy** | Deploy TypeScript Azure Functions to Consumption plan via func CLI | Functions v4 app deploy, self-contained package, CORS, trigger sync, post-deploy verification |
+| **azure-swa-deploy** | Deploy static sites to Azure Static Web Apps | SWA CLI / GitHub Actions CI/CD, framework detection, linked API CORS, custom domains |
 | **sync-skills** | Keep your local skills repo updated from GitHub | Before using other skills, want latest versions |
 
 ---
@@ -157,4 +159,4 @@ When improving a skill:
 ---
 
 **Last updated:** 2026-07-23  
-**Total skills:** 4 (roomsense-wishlist-first, grow-up, infra-script-authoring, sync-skills)
+**Total skills:** 6 (roomsense-wishlist-first, grow-up, infra-script-authoring, azure-functions-deploy, azure-swa-deploy, sync-skills)
