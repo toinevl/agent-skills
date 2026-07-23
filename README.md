@@ -2,7 +2,7 @@
 
 Reusable skills for Claude, Hermes, and other agents. Each skill automates a specific workflow or pattern.
 
-**Repository:** `https://github.com/YOUR_ACCOUNT/agent-skills`  
+**Repository:** `https://github.com/toinevl/agent-skills`  
 **Access:** Clone and point agents to this directory  
 **Update:** Use the `sync-skills` skill to keep your local copy fresh
 
@@ -14,6 +14,7 @@ Reusable skills for Claude, Hermes, and other agents. Each skill automates a spe
 |-------|---------|----------|
 | **roomsense-wishlist-first** | Enforce wishlist-first discipline in RoomSense | Starting work, reviewing commits, coordinating lanes (@C, @H, @O) |
 | **grow-up** | Turn problems into permanent improvements via root cause analysis | Something breaks, a mistake happens, a pattern fails, you want to prevent recurrence |
+| **infra-script-authoring** | Author infrastructure scripts for platforms you can't test against | Writing bash/Python automation for Proxmox, Azure, AWS, K8s without a live test instance |
 | **sync-skills** | Keep your local skills repo updated from GitHub | Before using other skills, want latest versions |
 
 ---
@@ -24,7 +25,7 @@ Reusable skills for Claude, Hermes, and other agents. Each skill automates a spe
 
 ```bash
 # Clone the repo
-git clone https://github.com/YOUR_ACCOUNT/agent-skills ~/agent-skills
+git clone https://github.com/toinevl/agent-skills ~/agent-skills
 
 # Use a skill
 # The skill will be available to invoke in Claude Code
@@ -35,7 +36,7 @@ git clone https://github.com/YOUR_ACCOUNT/agent-skills ~/agent-skills
 When briefing Hermes, include:
 
 ```
-Skills repo: https://github.com/YOUR_ACCOUNT/agent-skills
+Skills repo: https://github.com/toinevl/agent-skills
 
 Use the roomsense-wishlist-first skill to check if work is tracked on wishlist.
 Use the grow-up skill to analyze this problem and prevent recurrence.
@@ -56,10 +57,10 @@ Hermes will:
 (You brief Hermes)
 "I need you to do the backend work for Strategy 2. Before you start, 
 use the roomsense-wishlist-first skill to add items to the wishlist. 
-Skills repo: https://github.com/YOUR_ACCOUNT/claude-skills"
+Skills repo: https://github.com/toinevl/agent-skills"
 
 (Hermes)
-1. Clones https://github.com/YOUR_ACCOUNT/claude-skills
+1. Clones https://github.com/toinevl/agent-skills
 2. Reads ~/claude-skills/roomsense-wishlist-first/SKILL.md
 3. Adds items to wishlist with @H (Hermes) lane ownership
 4. Commits with proper references
@@ -121,7 +122,7 @@ Use the **sync-skills** skill to pull latest from GitHub:
 "Can you use the sync-skills skill to update the skills repo?"
 
 sync-skills will:
-1. Pull latest from https://github.com/YOUR_ACCOUNT/claude-skills
+1. Pull latest from https://github.com/toinevl/agent-skills
 2. Show what changed
 3. Update your local copy
 4. Confirm all skills are ready
@@ -155,5 +156,5 @@ When improving a skill:
 
 ---
 
-**Last updated:** 2026-07-22  
-**Total skills:** 3 (roomsense-wishlist-first, grow-up, sync-skills)
+**Last updated:** 2026-07-23  
+**Total skills:** 4 (roomsense-wishlist-first, grow-up, infra-script-authoring, sync-skills)
