@@ -14,10 +14,17 @@ Reusable skills for Claude, Hermes, and other agents. Each skill automates a spe
 |-------|---------|----------|
 | **roomsense-wishlist-first** | Enforce wishlist-first discipline in RoomSense | Starting work, reviewing commits, coordinating lanes (@C, @H, @O) |
 | **grow-up** | Turn problems into permanent improvements via root cause analysis | Something breaks, a mistake happens, a pattern fails, you want to prevent recurrence |
+| **sync-skills** | Keep your local skills repo updated from GitHub | Before using other skills, want latest versions |
+| **verify-external-target** | Verify against the live/public source before implementing external-alignment work | Told to match/mirror/align to a brand, product, competitor, or spec — especially if the "official" source is blocked |
 | **infra-script-authoring** | Author infrastructure scripts for platforms you can't test against | Writing bash/Python automation for Proxmox, Azure, AWS, K8s without a live test instance |
 | **azure-functions-deploy** | Deploy TypeScript Azure Functions to Consumption plan via func CLI | Functions v4 app deploy, self-contained package, CORS, trigger sync, post-deploy verification |
 | **azure-swa-deploy** | Deploy static sites to Azure Static Web Apps | SWA CLI / GitHub Actions CI/CD, framework detection, linked API CORS, custom domains |
-| **sync-skills** | Keep your local skills repo updated from GitHub | Before using other skills, want latest versions |
+| **ops-infra** | Review Bicep/ARM IaC for correctness, security, and cost | Reviewing infra changes before merging |
+| **ops-pipeline** | Review GitHub Actions CI/CD pipelines | Reviewing workflow changes before merging |
+| **arch-api-design** | Design and document a REST API contract before implementation | Starting a new endpoint |
+| **arch-adr** | Draft an Architecture Decision Record | Documenting a significant architectural decision |
+| **arch-spec** | Generate a technical spec for a new feature | Before implementation starts on a non-trivial feature |
+| **check-release** | Pre-release checklist (env vars, secrets, storage, deploy verification) | Before deploying to production |
 
 ---
 
@@ -158,5 +165,7 @@ When improving a skill:
 
 ---
 
-**Last updated:** 2026-07-23  
-**Total skills:** 6 (roomsense-wishlist-first, grow-up, infra-script-authoring, azure-functions-deploy, azure-swa-deploy, sync-skills)
+**Last updated:** 2026-07-27  
+**Total skills:** 13 (roomsense-wishlist-first, grow-up, sync-skills, verify-external-target,
+infra-script-authoring, azure-functions-deploy, azure-swa-deploy, ops-infra, ops-pipeline,
+arch-api-design, arch-adr, arch-spec, check-release)
