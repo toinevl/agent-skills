@@ -1,0 +1,51 @@
+{
+  "_comment": "Hand-maintained repo-level metadata. The skills[] array in MANIFEST.json is NOT edited here or there - it is generated from SKILL.md frontmatter by tools/build-manifest.py. Skill names in the version history below are the names as they were at the time of that release.",
+  "repository": "https://github.com/toinevl/agent-skills",
+  "description": "Shared skills library for Claude, Hermes, and other agents",
+  "version": "2.0.0",
+  "last_updated": "2026-07-29",
+  "versions": {
+    "1.0.0": {
+      "date": "2026-07-22",
+      "changes": "Initial release: roomsense-wishlist-first, grow-up, sync-skills"
+    },
+    "1.1.0": {
+      "date": "2026-07-23",
+      "changes": "Added infra-script-authoring"
+    },
+    "1.2.0": {
+      "date": "2026-07-23",
+      "changes": "Added azure-functions-deploy, azure-swa-deploy"
+    },
+    "1.3.0": {
+      "date": "2026-07-23",
+      "changes": "Added ops-infra, ops-pipeline, arch-api-design, check-release, arch-adr, arch-spec (adapted from imserhatdemir/Claude-Skills)"
+    },
+    "1.4.0": {
+      "date": "2026-07-27",
+      "changes": "Added verify-external-target (grow-up fix: RoomSense TU/e rebrand shipped guessed brand colors/font/shape twice before verifying against tue.nl's actual live CSS)"
+    },
+    "1.5.0": {
+      "date": "2026-07-29",
+      "changes": "Manifest drift fix: dropped azure-functions-deploy and azure-swa-deploy entries (deleted in 244023a but still listed); corrected sync-skills and infra-script-authoring versions to match their SKILL.md frontmatter; standardized repo path on ~/AI-Projects/agent-skills"
+    },
+    "2.0.0": {
+      "date": "2026-07-29",
+      "changes": "BREAKING: every skill renamed with a tvv- prefix, so invocation is unambiguous against builtin skills of the same name. Per-skill metadata (version, category, scope, triggers, status, dates) moved into SKILL.md frontmatter; MANIFEST.json skills[] is now generated from it by tools/build-manifest.py and verified in CI. Repaired frontmatter in 6 skills whose unquoted descriptions made them invalid YAML."
+    }
+  },
+  "removed": [
+    {
+      "name": "azure-functions-deploy",
+      "removed_in": "244023a",
+      "date": "2026-07-23",
+      "reason": "Covered by Claude builtin azure-functions-flex-deploy"
+    },
+    {
+      "name": "azure-swa-deploy",
+      "removed_in": "244023a",
+      "date": "2026-07-23",
+      "reason": "Recreated as a Claude builtin with the same content"
+    }
+  ]
+}
