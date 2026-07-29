@@ -1,8 +1,8 @@
 {
   "repository": "https://github.com/toinevl/agent-skills",
   "description": "Shared skills library for Claude, Hermes, and other agents",
-  "version": "1.4.0",
-  "last_updated": "2026-07-27",
+  "version": "1.5.0",
+  "last_updated": "2026-07-29",
   "skills": [
     {
       "name": "roomsense-wishlist-first",
@@ -30,7 +30,7 @@
     },
     {
       "name": "sync-skills",
-      "version": "1.0.0",
+      "version": "1.3.0",
       "category": "maintenance",
       "scope": ["all"],
       "description": "Keep your local skills repo updated from GitHub",
@@ -42,36 +42,12 @@
     },
     {
       "name": "infra-script-authoring",
-      "version": "1.0.0",
+      "version": "1.2.0",
       "category": "ops",
       "scope": ["all"],
       "description": "Author infrastructure scripts for platforms you can't test against — verify API values from docs, never guess",
       "path": "infra-script-authoring/",
       "triggers": ["writing bash script", "proxmox script", "infra script", "shell automation"],
-      "created": "2026-07-23",
-      "last_updated": "2026-07-23",
-      "status": "stable"
-    },
-    {
-      "name": "azure-functions-deploy",
-      "version": "1.0.0",
-      "category": "ops",
-      "scope": ["all"],
-      "description": "Deploy Azure Functions (TypeScript/Node) to Consumption plan via func CLI",
-      "path": "azure-functions-deploy/",
-      "triggers": ["deploy functions", "azure functions deploy", "func deploy"],
-      "created": "2026-07-23",
-      "last_updated": "2026-07-23",
-      "status": "stable"
-    },
-    {
-      "name": "azure-swa-deploy",
-      "version": "1.0.0",
-      "category": "ops",
-      "scope": ["all"],
-      "description": "Deploy static sites to Azure Static Web Apps via GitHub Actions or SWA CLI",
-      "path": "azure-swa-deploy/",
-      "triggers": ["deploy SWA", "static web app deploy", "swa deploy"],
       "created": "2026-07-23",
       "last_updated": "2026-07-23",
       "status": "stable"
@@ -181,6 +157,24 @@
     "1.4.0": {
       "date": "2026-07-27",
       "changes": "Added verify-external-target (grow-up fix: RoomSense TU/e rebrand shipped guessed brand colors/font/shape twice before verifying against tue.nl's actual live CSS)"
+    },
+    "1.5.0": {
+      "date": "2026-07-29",
+      "changes": "Manifest drift fix: drop azure-functions-deploy and azure-swa-deploy entries (deleted in 244023a, still listed here and in README); correct sync-skills and infra-script-authoring versions to match their SKILL.md frontmatter; standardize repo path on ~/AI-Projects/agent-skills"
     }
-  }
+  },
+  "removed": [
+    {
+      "name": "azure-functions-deploy",
+      "removed_in": "244023a",
+      "date": "2026-07-23",
+      "reason": "Covered by Claude builtin azure-functions-flex-deploy"
+    },
+    {
+      "name": "azure-swa-deploy",
+      "removed_in": "244023a",
+      "date": "2026-07-23",
+      "reason": "Recreated as a Claude builtin with the same content"
+    }
+  ]
 }

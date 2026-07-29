@@ -1,7 +1,7 @@
 ---
 name: sync-skills
 description: "Keep your local skills repo updated from GitHub. Pull latest, copy new skills to the local install directory, show what changed, verify all skills present."
-version: 1.2.0
+version: 1.3.0
 tags: [skills, sync, maintenance]
 platforms: [linux, macos]
 ---
@@ -23,9 +23,15 @@ install them into your local skills directory, and report what changed.
 
 ## Execution
 
+The repo lives at `~/AI-Projects/agent-skills` on every machine. Clone it there if missing:
+
+```bash
+[ -d ~/AI-Projects/agent-skills ] || git clone https://github.com/toinevl/agent-skills ~/AI-Projects/agent-skills
+```
+
 ```bash
 # 1. Pull latest from the repo
-cd ~/agent-skills
+cd ~/AI-Projects/agent-skills
 git pull origin main
 
 # 2. Show recent changes
@@ -41,7 +47,8 @@ After pulling, copy any new or changed skill folders to your local skills direct
 
 **For Claude** (local skills at `~/.claude/skills/`):
 ```bash
-cp -r ~/agent-skills/<skill-name> ~/.claude/skills/<skill-name>
+mkdir -p ~/.claude/skills
+cp -r ~/AI-Projects/agent-skills/<skill-name> ~/.claude/skills/<skill-name>
 ```
 
 **For Hermes** (local skills at `~/.hermes/profiles/glm/skills/`):
@@ -57,8 +64,6 @@ cp -r ~/AI-Projects/agent-skills/<skill-name> ~/.hermes/profiles/glm/skills/<ski
 | Skill | Category | Rationale |
 |-------|----------|-----------|
 | infra-script-authoring | devops | Infrastructure automation patterns |
-| azure-functions-deploy | devops | Azure Functions deployment |
-| azure-swa-deploy | devops | Static Web Apps deployment |
 | ops-infra | devops | IaC review |
 | ops-pipeline | devops | CI/CD review |
 | arch-api-design | (top-level) | Architecture, not devops |
@@ -74,7 +79,10 @@ cp -r ~/AI-Projects/agent-skills/<skill-name> ~/.hermes/profiles/glm/skills/<ski
 After sync, verify all skills load:
 - Each skill has a valid `SKILL.md` with YAML frontmatter
 - No placeholder URLs (`YOUR_ACCOUNT`) remain
-- MANIFEST version: `cat ~/agent-skills/MANIFEST.json | python3 -c "import sys,json; d=json.load(sys.stdin); print(d['version'], d['last_updated'])"`
+- MANIFEST version: `python3 -c "import json; d=json.load(open('$HOME/AI-Projects/agent-skills/MANIFEST.json')); print(d['version'], d['last_updated'])"`
+- Every skill directory in the repo appears in `MANIFEST.json`, and every manifest
+  `path` resolves to a real directory — the two drift apart when a skill is deleted
+  without updating the manifest
 
-**Last updated:** 2026-07-23
-**Current version:** 1.2.0
+**Last updated:** 2026-07-29
+**Current version:** 1.3.0

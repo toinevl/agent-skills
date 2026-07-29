@@ -17,8 +17,6 @@ Reusable skills for Claude, Hermes, and other agents. Each skill automates a spe
 | **sync-skills** | Keep your local skills repo updated from GitHub | Before using other skills, want latest versions |
 | **verify-external-target** | Verify against the live/public source before implementing external-alignment work | Told to match/mirror/align to a brand, product, competitor, or spec — especially if the "official" source is blocked |
 | **infra-script-authoring** | Author infrastructure scripts for platforms you can't test against | Writing bash/Python automation for Proxmox, Azure, AWS, K8s without a live test instance |
-| **azure-functions-deploy** | Deploy TypeScript Azure Functions to Consumption plan via func CLI | Functions v4 app deploy, self-contained package, CORS, trigger sync, post-deploy verification |
-| **azure-swa-deploy** | Deploy static sites to Azure Static Web Apps | SWA CLI / GitHub Actions CI/CD, framework detection, linked API CORS, custom domains |
 | **ops-infra** | Review Bicep/ARM IaC for correctness, security, and cost | Reviewing infra changes before merging |
 | **ops-pipeline** | Review GitHub Actions CI/CD pipelines | Reviewing workflow changes before merging |
 | **arch-api-design** | Design and document a REST API contract before implementation | Starting a new endpoint |
@@ -33,12 +31,15 @@ Reusable skills for Claude, Hermes, and other agents. Each skill automates a spe
 ### For Claude (Local)
 
 ```bash
-# Clone the repo
-git clone https://github.com/toinevl/agent-skills ~/agent-skills
+# Clone the repo (canonical location)
+git clone https://github.com/toinevl/agent-skills ~/AI-Projects/agent-skills
 
-# Use a skill
-# The skill will be available to invoke in Claude Code
+# Install the skills so Claude can invoke them
+cp -r ~/AI-Projects/agent-skills/<skill-name> ~/.claude/skills/<skill-name>
 ```
+
+Cloning alone is not enough — skills must be copied into `~/.claude/skills/`
+before Claude can invoke them. The `sync-skills` skill does both steps.
 
 ### For Hermes (or any agent)
 
@@ -70,7 +71,7 @@ Skills repo: https://github.com/toinevl/agent-skills"
 
 (Hermes)
 1. Clones https://github.com/toinevl/agent-skills
-2. Reads ~/claude-skills/roomsense-wishlist-first/SKILL.md
+2. Reads ~/AI-Projects/agent-skills/roomsense-wishlist-first/SKILL.md
 3. Adds items to wishlist with @H (Hermes) lane ownership
 4. Commits with proper references
 ```
@@ -165,7 +166,11 @@ When improving a skill:
 
 ---
 
-**Last updated:** 2026-07-27  
-**Total skills:** 13 (roomsense-wishlist-first, grow-up, sync-skills, verify-external-target,
-infra-script-authoring, azure-functions-deploy, azure-swa-deploy, ops-infra, ops-pipeline,
-arch-api-design, arch-adr, arch-spec, check-release)
+**Last updated:** 2026-07-29  
+**Total skills:** 11 (roomsense-wishlist-first, grow-up, sync-skills, verify-external-target,
+infra-script-authoring, ops-infra, ops-pipeline, arch-api-design, arch-adr, arch-spec,
+check-release)
+
+> `azure-functions-deploy` and `azure-swa-deploy` were removed in `244023a` — both are
+> covered by Claude's builtin skills. This repo keeps only skills that have no builtin
+> equivalent.
