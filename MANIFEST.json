@@ -63,6 +63,26 @@
       "status": "stable"
     },
     {
+      "name": "tvv-azure-resource-hygiene",
+      "version": "1.0.0",
+      "category": "devops",
+      "scope": [
+        "all"
+      ],
+      "description": "Use after Azure migrations. Decommission replaced resources.",
+      "path": "tvv-azure-resource-hygiene/",
+      "triggers": [
+        "migrating azure resources",
+        "changing hosting model",
+        "replacing infra",
+        "deploying bicep changes",
+        "after architecture decision changes"
+      ],
+      "created": "2026-07-31",
+      "last_updated": "2026-07-31",
+      "status": "stable"
+    },
+    {
       "name": "tvv-check-release",
       "version": "1.0.0",
       "category": "process",
