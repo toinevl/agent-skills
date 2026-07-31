@@ -1,0 +1,459 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Business Case · [PROJECT NAME]</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&family=Lato:wght@400;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* TU/e brand system for business-case dashboards.
+   tue.nl red #C72125, deep blue #023F88, blue #0067B3, magenta #D60270, amber #FBA312.
+   Type: Montserrat + Lato, figures in IBM Plex Mono.
+   DO NOT redesign this CSS per business case — copy it verbatim and only add new
+   component classes if a case genuinely needs something not covered here.
+   If the target folder already has a TU/e dashboard HTML file (e.g. dashboard-standalone.html),
+   copy ITS <style> block instead of this one, so visual language stays consistent within a project. */
+
+:root {
+  --tue-red: #C72125;
+  --tue-red-dark: #B31E21;
+  --tue-logo-red: #E4002B;
+  --tue-blue: #0067B3;
+  --tue-deep: #023F88;
+  --tue-magenta: #D60270;
+  --tue-amber: #FBA312;
+  --tue-amber-ink: #9A5B00;
+  --tue-ink: #161A1E;
+  --tue-grey: #636363;
+  --tue-line: #E0E5EA;
+  --tue-surface: #F5F7F9;
+  --tue-card: #FFFFFF;
+  --dot-1: #9AA3AC;
+  --dot-2: var(--tue-red);
+  --dot-3: var(--tue-blue);
+  --dot-4: var(--tue-magenta);
+  --font-display: "Montserrat", "Helvetica Neue", sans-serif;
+  --font-body: "Lato", "Helvetica Neue", sans-serif;
+  --font-mono: "IBM Plex Mono", Consolas, monospace;
+}
+
+html { background: var(--tue-surface); }
+body { background: var(--tue-surface); font-family: var(--font-body); color: var(--tue-ink); margin: 0; }
+body::before {
+  content: ""; position: fixed; top: 0; left: 0; right: 0; height: 6px;
+  background: linear-gradient(90deg, var(--tue-red-dark), var(--tue-red)); z-index: 100;
+}
+.dash-wrap { max-width: 1200px; margin: 0 auto; padding: 6px 48px 64px; }
+
+/* Header */
+.tue-header { display: flex; align-items: baseline; gap: 22px; padding: 46px 0 14px; animation: rise .5s ease both; }
+.tue-brand { font-family: var(--font-display); font-weight: 800; font-size: 29px; color: var(--tue-logo-red); letter-spacing: -.01em; white-space: nowrap; }
+.tue-brand .slash { color: var(--tue-logo-red); margin: 0 1px; font-weight: 700; }
+.tue-brand .prog { font-family: var(--font-body); font-weight: 400; font-size: 14px; color: var(--tue-grey); letter-spacing: .02em; margin-left: 14px; padding-left: 14px; border-left: 1px solid var(--tue-line); }
+.tue-header h1 { font-family: var(--font-display); font-weight: 700; font-size: 24px; color: var(--tue-ink); margin: 0 0 0 auto; letter-spacing: -.01em; }
+.tue-header h1 span { color: var(--tue-grey); font-weight: 400; font-size: 16px; margin-left: 10px; letter-spacing: 0; }
+.badge-internal { font-family: var(--font-display); font-size: 10.5px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--tue-ink); border: 1.4px solid var(--tue-ink); border-radius: 5px; padding: 4px 10px 3px; transform: translateY(-3px); }
+
+/* Problem / current-state strip (optional — use when the case needs to justify itself) */
+.problem-card { background: var(--tue-card); border: 1px solid var(--tue-line); border-left: 4px solid var(--tue-deep); border-radius: 14px; padding: 20px 26px; margin-bottom: 18px; animation: rise .5s .02s ease both; }
+.problem-card .pc-chip { display: inline-block; font-family: var(--font-display); font-size: 10.5px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: #fff; background: var(--tue-deep); border-radius: 5px; padding: 5px 10px 4px; margin-bottom: 10px; }
+.problem-card p { margin: 0; font-size: 15.5px; line-height: 1.6; color: var(--tue-ink); }
+.problem-card p strong { color: var(--tue-deep); font-weight: 700; }
+.stat-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 22px; animation: rise .5s .05s ease both; }
+.stat { background: var(--tue-card); border: 1px solid var(--tue-line); border-radius: 12px; padding: 14px 18px 12px; }
+.stat .s-val { font-family: var(--font-display); font-weight: 800; font-size: 26px; color: var(--tue-red-dark); letter-spacing: -.01em; font-variant-numeric: tabular-nums; }
+.stat .s-lbl { font-size: 12.5px; color: var(--tue-grey); line-height: 1.4; margin-top: 2px; }
+
+/* Option switch — rename "tier" to whatever the deck's own decision slide calls its options
+   (e.g. Do nothing/Secure Core/Extended, or Bronze/Silver/Gold) — never invent tier names
+   that only exist on hidden slides. */
+.tier-switch { display: flex; justify-content: center; margin: 22px 0 8px; animation: rise .5s .06s ease both; }
+.tier-switch-inner { position: relative; }
+.tier-switch form { display: inline-flex !important; gap: 4px; background: var(--tue-card); border: 1px solid var(--tue-line); border-radius: 12px; padding: 5px; box-shadow: 0 1px 4px rgba(2, 63, 136, .08); }
+.tier-switch label { position: relative; display: inline-flex; align-items: center; gap: 9px; padding: 11px 30px 10px; border-radius: 8px; cursor: pointer; font-family: var(--font-display); font-size: 14px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; color: var(--tue-grey); transition: background .18s ease, color .18s ease; user-select: none; }
+.tier-switch label::before { content: ""; width: 9px; height: 9px; border-radius: 50%; background: var(--dot, var(--tue-grey)); box-shadow: inset 0 0 0 1px rgba(0,0,0,.12); }
+.tier-switch label:nth-of-type(1) { --dot: var(--dot-1); }
+.tier-switch label:nth-of-type(2) { --dot: var(--dot-2); }
+.tier-switch label:nth-of-type(3) { --dot: var(--dot-3); }
+.tier-switch label:nth-of-type(4) { --dot: var(--dot-4); }
+.tier-switch label:hover { color: var(--tue-red-dark); }
+.tier-switch label:has(input:checked) { background: var(--tue-red); color: #fff; }
+/* Move this ::after to whichever nth-of-type is the recommended option */
+.tier-switch label.recommended::after {
+  content: "Aanbevolen"; position: absolute; top: -11px; left: 50%; transform: translateX(-50%);
+  background: #2E7D32; color: #fff; font-size: 9px; font-weight: 700; letter-spacing: .08em;
+  padding: 2px 7px 1.5px; border-radius: 999px; white-space: nowrap;
+}
+.tier-switch input[type="radio"] { position: absolute; opacity: 0; pointer-events: none; }
+.scope-note { text-align: center; font-size: 11.5px; color: var(--tue-grey); margin-bottom: 22px; }
+
+/* Tier statement */
+.tier-statement { display: flex; align-items: baseline; gap: 18px; background: var(--tue-card); border: 1px solid var(--tue-line); border-left: 4px solid var(--tue-red); border-radius: 14px; padding: 18px 26px; margin: 20px 0 18px; animation: rise .5s .04s ease both; }
+.tier-statement .ts-chip { flex: none; font-family: var(--font-display); font-size: 10.5px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: #fff; background: var(--tue-red); border-radius: 5px; padding: 5px 10px 4px; transform: translateY(-2px); }
+.tier-statement p { margin: 0; font-size: 15.5px; line-height: 1.6; color: var(--tue-ink); }
+.tier-statement p strong { color: var(--tue-red-dark); font-weight: 700; }
+
+/* Get / risk panels */
+.getlose { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 18px; animation: rise .5s .07s ease both; }
+.gl-col { background: var(--tue-card); border: 1px solid var(--tue-line); border-radius: 14px; padding: 20px 24px 18px; }
+.gl-get { border-top: 3px solid #2E7D32; }
+.gl-risk { border-top: 3px solid var(--tue-amber); }
+.gl-head { font-family: var(--font-display); font-size: 12px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; margin: 0 0 12px; display: flex; align-items: center; gap: 9px; }
+.gl-get .gl-head { color: #2E7D32; }
+.gl-risk .gl-head { color: var(--tue-amber-ink); }
+.gl-head::before { font-size: 13px; font-weight: 800; line-height: 1; width: 19px; height: 19px; display: inline-flex; align-items: center; justify-content: center; border-radius: 50%; color: #fff; }
+.gl-get .gl-head::before { content: "\2713"; background: #2E7D32; }
+.gl-risk .gl-head::before { content: "\0021"; background: var(--tue-amber); }
+.gl-col ul { margin: 0; padding: 0; list-style: none; }
+.gl-col li { position: relative; padding-left: 17px; margin-bottom: 11px; font-size: 13.5px; line-height: 1.55; color: var(--tue-ink); }
+.gl-col li:last-child { margin-bottom: 0; }
+.gl-col li::before { content: ""; position: absolute; left: 0; top: 8px; width: 6px; height: 6px; border-radius: 50%; }
+.gl-get li::before { background: #2E7D32; }
+.gl-risk li::before { background: var(--tue-amber); }
+
+/* KPI row */
+.kpi-row { display: grid; grid-template-columns: 1.3fr 1fr 0.8fr 1fr; gap: 18px; margin-bottom: 22px; }
+.kpi { background: var(--tue-card); border: 1px solid var(--tue-line); border-radius: 14px; padding: 20px 24px 18px; animation: rise .5s ease both; }
+.kpi:nth-child(2) { animation-delay: .08s; } .kpi:nth-child(3) { animation-delay: .12s; } .kpi:nth-child(4) { animation-delay: .16s; }
+.kpi .label { font-family: var(--font-display); font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--tue-grey); margin-bottom: 6px; }
+.kpi .value { font-family: var(--font-display); font-weight: 800; font-size: 34px; line-height: 1.05; color: var(--tue-ink); font-variant-numeric: tabular-nums; letter-spacing: -.02em; }
+.kpi .value small { font-size: 15px; font-weight: 500; color: var(--tue-grey); margin-left: 6px; letter-spacing: 0; }
+.kpi.hero { background: radial-gradient(130% 150% at 100% 0%, rgba(0,0,0,.22), transparent 55%), linear-gradient(135deg, var(--tue-red-dark) 0%, var(--tue-red) 72%, #D7403B 110%); border: none; box-shadow: 0 8px 22px rgba(199,33,37,.26); }
+.kpi.hero .label { color: rgba(255,255,255,.75); }
+.kpi.hero .value { color: #fff; font-size: 42px; }
+.kpi.hero .value small { color: rgba(255,255,255,.78); }
+.kpi .sub { font-size: 12.5px; color: var(--tue-grey); margin-top: 4px; }
+.kpi.hero .sub { color: rgba(255,255,255,.72); }
+.kpi .value.pending { color: var(--tue-amber-ink); }
+.kpi .value.clear { color: #2E7D32; }
+
+/* Main grid */
+.dash-grid { display: grid; grid-template-columns: minmax(0,1fr) 332px; gap: 18px; align-items: start; }
+.card { background: var(--tue-card); border: 1px solid var(--tue-line); border-radius: 14px; padding: 26px 30px; animation: rise .55s .1s ease both; }
+.card h3, .card-title { font-family: var(--font-display); font-size: 12px; font-weight: 700; letter-spacing: .13em; text-transform: uppercase; color: var(--tue-ink); margin: 0 0 16px; padding-bottom: 7px; border-bottom: 2px solid var(--tue-red); display: inline-block; }
+.dash-side { display: flex; flex-direction: column; gap: 16px; }
+.empty-note { font-size: 13px; color: var(--tue-grey); line-height: 1.6; padding: 10px 0 4px; }
+
+.toplines { margin-top: 18px; border-top: 1px solid var(--tue-line); padding-top: 14px; }
+.toplines .tl-head { font-family: var(--font-display); font-size: 11px; font-weight: 700; letter-spacing: .13em; text-transform: uppercase; color: var(--tue-grey); margin-bottom: 10px; }
+.tl-row { display: grid; grid-template-columns: minmax(0,1fr) 70px 120px; align-items: center; gap: 12px; padding: 5px 0; font-size: 13.5px; cursor: default; border-radius: 5px; transition: background .12s ease; }
+.tl-row:hover { background: rgba(0,0,0,.03); }
+.tl-row .tl-name { color: var(--tue-ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tl-row .tl-amt { font-family: var(--font-mono); font-size: 12.5px; text-align: right; color: var(--tue-ink); font-weight: 500; }
+.tl-row .tl-bar { height: 6px; border-radius: 3px; background: #EDF1F5; overflow: hidden; }
+.tl-row .tl-bar i { display: block; height: 100%; border-radius: 3px; }
+
+table.subtotals { width: 100%; border-collapse: collapse; font-size: 13px; }
+table.subtotals th { font-family: var(--font-display); font-weight: 700; font-size: 10.5px; letter-spacing: .1em; text-transform: uppercase; color: var(--tue-grey); text-align: right; padding: 4px 0 8px 12px; }
+table.subtotals th:first-child { text-align: left; padding-left: 0; }
+table.subtotals td { padding: 7px 0 7px 12px; border-top: 1px solid var(--tue-line); text-align: right; font-family: var(--font-mono); font-size: 12.5px; color: var(--tue-ink); }
+table.subtotals td:first-child { font-family: var(--font-body); text-align: left; padding-left: 0; color: var(--tue-grey); }
+table.subtotals td.pmcell { color: var(--tue-amber-ink); font-style: italic; }
+table.subtotals td.active { color: var(--tue-red-dark); font-weight: 700; background: rgba(199,33,37,.06); }
+table.subtotals tr.total td { font-weight: 700; color: var(--tue-ink); border-top: 2px solid var(--tue-ink); }
+table.subtotals tr.total td:first-child { font-family: var(--font-display); text-transform: uppercase; font-size: 11px; letter-spacing: .1em; }
+
+.card.pm { border-left: 4px solid var(--tue-amber); background: #FFFBF2; }
+.card.pm h3, .card.pm .card-title { color: var(--tue-amber-ink); border-bottom-color: var(--tue-amber); }
+.card.pm ul { margin: 0; padding-left: 18px; }
+.card.pm li { font-size: 13px; line-height: 1.5; margin-bottom: 8px; color: #6E5634; }
+.card.pm li strong { color: var(--tue-ink); display: block; font-weight: 700; }
+.card.pm .pm-disclaimer { font-size: 12.5px; line-height: 1.55; color: #6E5634; margin: 0 0 12px; }
+.card.pm .pm-disclaimer strong { color: var(--tue-amber-ink); font-weight: 700; }
+
+.decision-note { margin-top: 22px; background: #EEF3F7; border: 1px solid var(--tue-line); border-left: 3px solid var(--tue-blue); border-radius: 10px; padding: 16px 20px; font-size: 13px; line-height: 1.6; color: var(--tue-ink); }
+.decision-note strong { color: var(--tue-deep); font-weight: 700; }
+.decision-note ul { margin: 8px 0 0; padding-left: 18px; }
+.decision-note li { margin-bottom: 4px; }
+
+/* Source-conflict banner — use when two VISIBLE slides in the same deck state
+   different numbers for the same thing. Never use this to paper over a hidden-vs-
+   visible mismatch (that's a different case: just don't use the hidden number).
+   This is specifically for "the deck disagrees with itself in plain sight." */
+.conflict-note { display: flex; gap: 12px; align-items: flex-start; background: #FFF4E5; border: 1px solid var(--tue-amber); border-left: 4px solid var(--tue-amber); border-radius: 12px; padding: 14px 20px; margin: 0 0 18px; font-size: 13.5px; line-height: 1.6; color: var(--tue-ink); animation: rise .5s .03s ease both; }
+.conflict-note .cn-icon { flex: none; width: 22px; height: 22px; border-radius: 50%; background: var(--tue-amber); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 800; font-family: var(--font-display); font-size: 13px; }
+.conflict-note strong { color: var(--tue-amber-ink); font-weight: 700; }
+
+.dash-foot { margin-top: 22px; font-size: 12px; color: var(--tue-grey); border-top: 1px solid var(--tue-line); padding-top: 12px; display: flex; gap: 8px; align-items: baseline; flex-wrap: wrap; }
+.dash-foot code { background: #F3E9E9; color: var(--tue-red-dark); border-radius: 4px; padding: 1px 6px; font-family: var(--font-mono); font-size: 11.5px; }
+
+@keyframes rise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+@media (max-width: 980px) { .dash-grid { grid-template-columns: 1fr; } .kpi-row { grid-template-columns: 1fr 1fr; } .stat-row { grid-template-columns: 1fr 1fr; } }
+
+.catchart { margin-top: 4px; }
+.cbrow { display: grid; grid-template-columns: 220px 1fr 74px; align-items: center; gap: 14px; padding: 9px 0; }
+.cblabel { font-size: 13.5px; color: var(--tue-ink); text-align: right; line-height: 1.25; }
+.cbtrack { position: relative; height: 26px; background: #F1F4F7; border-radius: 4px; display: flex; overflow: hidden; }
+.cbseg { height: 100%; cursor: default; transition: filter .12s ease; }
+.cbseg:hover { filter: brightness(1.12); }
+.cbseg + .cbseg { box-shadow: inset 1.4px 0 0 #fff; }
+.cbtot { font-family: var(--font-mono); font-size: 12.5px; color: var(--tue-ink); font-weight: 600; text-align: right; }
+.cbaxis { display: grid; grid-template-columns: 220px 1fr 74px; gap: 14px; margin-top: 6px; }
+.cbaxis .ticks { position: relative; height: 16px; font-size: 11px; color: var(--tue-grey); font-family: var(--font-mono); }
+.cbaxis .ticks span { position: absolute; transform: translateX(-50%); }
+.cbgrid { position: absolute; top: 0; bottom: 0; width: 1px; background: rgba(0,0,0,.06); }
+.legend { display: flex; gap: 18px; flex-wrap: wrap; margin: 2px 0 16px; }
+.legend .lg { display: inline-flex; align-items: center; gap: 7px; font-size: 12.5px; color: var(--tue-grey); }
+.legend .sw { width: 12px; height: 12px; border-radius: 3px; }
+
+.tip { position: absolute; z-index: 200; max-width: 340px; background: var(--tue-card); border: 1px solid var(--tue-line); border-left: 3px solid var(--tue-red); border-radius: 9px; box-shadow: 0 8px 24px rgba(0,0,0,.16); padding: 12px 15px; pointer-events: none; }
+.tip-name { font-family: var(--font-display); font-weight: 700; font-size: 13.5px; color: var(--tue-ink); margin-bottom: 3px; }
+.tip-amt { font-family: var(--font-mono); font-size: 12.5px; color: var(--tue-red-dark); margin-bottom: 8px; }
+.tip-note { font-size: 12.5px; line-height: 1.55; color: var(--tue-grey); }
+</style>
+</head>
+<body>
+<div class="dash-wrap">
+  <header class="tue-header">
+    <div class="tue-brand">TU<span class="slash">/</span>e<span class="prog">[TEAM]</span></div>
+    <h1>[PROJECT NAME] <span>business case</span></h1>
+    <span class="badge-internal">Intern</span>
+  </header>
+
+  <!-- Optional: problem-card + stat-row. Omit entirely if the case doesn't need to
+       establish a baseline/current-state before presenting options. -->
+  <div class="problem-card">
+    <span class="pc-chip">Huidige situatie</span>
+    <p>[One or two sentences on the problem, sourced from the deck's own problem-statement slide.]</p>
+  </div>
+  <div class="stat-row">
+    <div class="stat"><div class="s-val">[N]</div><div class="s-lbl">[label]</div></div>
+    <div class="stat"><div class="s-val">[N]</div><div class="s-lbl">[label]</div></div>
+    <div class="stat"><div class="s-val">[N]</div><div class="s-lbl">[label]</div></div>
+    <div class="stat"><div class="s-val">[N]</div><div class="s-lbl">[label]</div></div>
+  </div>
+
+  <div class="tier-switch"><div class="tier-switch-inner"><form><div>
+    <!-- One <label> per option on the deck's actual decision slide. Add class="recommended"
+         to whichever one the deck marks as preferred/aanbevolen. -->
+    <label><input type="radio" name="tier" value="option_a">Option A</label>
+    <label class="recommended"><input type="radio" name="tier" value="option_b" checked>Option B</label>
+    <label><input type="radio" name="tier" value="option_c">Option C</label>
+  </div></form></div></div>
+  <div class="scope-note">[Optional: note here if any hidden-slide framework was deliberately excluded.]</div>
+
+  <div id="ts"></div>
+
+  <!-- Optional, only when two VISIBLE slides in the deck genuinely disagree on a number.
+       Render conditionally per-tier from JS if the conflict only applies to one option.
+  <div class="conflict-note"><span class="cn-icon">!</span><div>
+    <strong>Bronnen spreken elkaar tegen:</strong> [slide X states A]; [slide Y states B].
+    Dit dashboard toont [which one] als besluitcijfer; zie de kostentabel voor de andere.
+  </div></div> -->
+
+  <div id="getlose" class="getlose"></div>
+  <div id="kpis" class="kpi-row"></div>
+
+  <div class="dash-grid">
+    <div class="card chart-card">
+      <div class="card-title">Waar het geld naartoe gaat</div>
+      <div class="legend" id="legend"></div>
+      <div class="catchart" id="catbars"></div>
+      <div class="cbaxis" id="axiswrap"><div></div><div class="ticks" id="ticks"></div><div></div></div>
+      <div id="emptynote"></div>
+      <div class="toplines">
+        <div class="tl-head">Grootste kostenposten &mdash; hover voor toelichting</div>
+        <div id="toplines"></div>
+      </div>
+    </div>
+    <div class="dash-side">
+      <div class="card">
+        <div class="card-title">Categorie&euml;n per optie</div>
+        <div id="matrix"></div>
+      </div>
+      <div class="card pm">
+        <div class="card-title">Openstaande scope &mdash; pro memoria</div>
+        <div id="pm"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="decision-note">
+    <strong>Besluit gevraagd:</strong> [copy the exact ask from the deck's decision slide].
+    <ul>
+      <li>[reason 1, from the decision slide]</li>
+      <li>[reason 2]</li>
+    </ul>
+  </div>
+
+  <div class="dash-foot">
+    <span>[units/assumptions note]</span>
+    <span>Pro-memorie posten zijn uitgesloten van de totalen &mdash; nog geen ingeschatte bedragen.</span>
+    <span>Bron: alleen zichtbare slides van <code>[deck filename]</code> (slides [N]). Slides [X&ndash;Y] zijn in de brondeck verborgen (hidden) en zijn bewust niet gebruikt.</span>
+  </div>
+</div>
+
+<script>
+/* Data contract:
+   - B.tiers: array of option keys, in display order. Length 2-4 recommended (dot colors defined for 4).
+   - B.meta[tier]: {label, statement (HTML ok), benefits[], risks[]}
+   - B.kpi[tier]: {structural, oneoff, fte, fteSuffix, pending, pendingLabel} — all STRINGS,
+     verbatim from the deck's decision slide (use "PM" for not-yet-quantified options; never invent a number).
+   - B.categories: array of category names (drives both the bar chart legend and matrix rows).
+   - B.cat_totals[tier][category]: number, or the string "PM" if nothing in that category/tier is priced.
+   - B.lines[]: {cat, name, amounts:{tier:number|null}, pm:{tier:bool}, notes:{tier:string}}
+     Every amounts/notes value MUST trace to a specific visible slide — cite it in the note.
+     Set pm[tier]=true + amounts[tier]=null for anything not yet costed (goes to the PM panel instead of the chart).
+   Do not change the render() logic below for an ordinary business case — only the data object above
+   should change. If a case genuinely needs new visual behavior, extend render(), don't fork the whole file. */
+const B = {
+  "tiers": ["option_a", "option_b", "option_c"],
+  "meta": {
+    "option_a": {"label": "[label]", "statement": "[HTML-ok statement]", "benefits": ["..."], "risks": ["..."]},
+    "option_b": {"label": "[label]", "statement": "[HTML-ok statement]", "benefits": ["..."], "risks": ["..."]},
+    "option_c": {"label": "[label]", "statement": "[HTML-ok statement]", "benefits": ["..."], "risks": ["..."]}
+  },
+  "kpi": {
+    "option_a": {"structural": "€0", "oneoff": "€0", "fte": "0", "fteSuffix": "", "pending": 0, "pendingLabel": "n.v.t."},
+    "option_b": {"structural": "€0", "oneoff": "€0", "fte": "0", "fteSuffix": "FTE", "pending": 0, "pendingLabel": "pro memorie"},
+    "option_c": {"structural": "PM", "oneoff": "PM", "fte": "PM", "fteSuffix": "", "pending": 0, "pendingLabel": "scope + kosten TBD"}
+  },
+  "categories": ["Category 1", "Category 2"],
+  "colors": ["#0067B3", "#023F88", "#636363", "#D60270"],
+  "cat_totals": {
+    "option_a": {"Category 1": 0, "Category 2": 0},
+    "option_b": {"Category 1": 0, "Category 2": 0},
+    "option_c": {"Category 1": "PM", "Category 2": "PM"}
+  },
+  "lines": []
+};
+const cap = s => s[0].toUpperCase() + s.slice(1);
+const fmt = n => Math.round(n).toLocaleString("en");
+const esc = s => String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+const tierLabel = {}; B.tiers.forEach(t => tierLabel[t] = B.meta[t].label.split(" — ")[0].split(" (")[0]);
+const catColor = {}; B.categories.forEach((c,i)=>catColor[c]=B.colors[i]);
+
+let gmax = 0;
+B.tiers.forEach(t => B.categories.forEach(c => { const v = B.cat_totals[t][c]; if (typeof v === "number") gmax = Math.max(gmax, v); }));
+const niceMax = Math.ceil(gmax/50)*50 || 100;
+
+document.getElementById("legend").innerHTML = B.categories.map(c =>
+  `<span class="lg"><span class="sw" style="background:${catColor[c]}"></span>${esc(c)}</span>`).join("");
+{
+  const step = niceMax > 400 ? 100 : 50;
+  const ticks = []; for (let v=0; v<=niceMax; v+=step) ticks.push(v);
+  document.getElementById("ticks").innerHTML = ticks.map(v =>
+    `<span style="left:${100*v/niceMax}%">${v}k</span>`).join("") +
+    ticks.map(v => `<div class="cbgrid" style="left:${100*v/niceMax}%"></div>`).join("");
+}
+
+function render(tier){
+  const lines = B.lines.filter(l => (l.amounts[tier]||0) > 0)
+    .map(l => ({...l, value: l.amounts[tier], note: l.notes[tier]}))
+    .sort((a,b) => b.value - a.value);
+  const pm = B.lines.filter(l => l.pm[tier]);
+  const m = B.meta[tier];
+  const k = B.kpi[tier];
+
+  document.getElementById("ts").innerHTML =
+    `<div class="tier-statement"><span class="ts-chip">${esc(m.label)}</span><p>${m.statement}</p></div>`;
+
+  const glcol = (cls, head, items) =>
+    `<div class="gl-col ${cls}"><div class="gl-head">${head}</div><ul>` +
+    (items||[]).map(t => `<li>${esc(t)}</li>`).join("") + `</ul></div>`;
+  document.getElementById("getlose").innerHTML =
+    glcol("gl-get", "Wat we krijgen", m.benefits) +
+    glcol("gl-risk", "Wat we accepteren", m.risks);
+
+  const cls = v => v === "PM" ? "value pending" : "value";
+  document.getElementById("kpis").innerHTML = `
+    <div class="kpi hero">
+      <div class="label">Structureel budget</div>
+      <div class="${cls(k.structural)}">${esc(k.structural)}${k.structural!=="€0"&&k.structural!=="PM"?'<small>/ jaar</small>':''}</div>
+      <div class="sub">optie ${esc(tierLabel[tier])}</div>
+    </div>
+    <div class="kpi">
+      <div class="label">Eenmalig</div>
+      <div class="${cls(k.oneoff)}">${esc(k.oneoff)}</div>
+      <div class="sub">implementatie + enablement</div>
+    </div>
+    <div class="kpi">
+      <div class="label">FTE</div>
+      <div class="${cls(k.fte)}">${esc(k.fte)}${k.fteSuffix?`<small>${esc(k.fteSuffix)}</small>`:''}</div>
+      <div class="sub">kernteam</div>
+    </div>
+    <div class="kpi">
+      <div class="label">Openstaand</div>
+      <div class="value ${k.pending?'pending':'clear'}">${k.pending||'0'}</div>
+      <div class="sub">${esc(k.pendingLabel)}</div>
+    </div>`;
+
+  const activeCats = B.categories.filter(c => typeof B.cat_totals[tier][c] === "number" && B.cat_totals[tier][c] > 0);
+  if (activeCats.length === 0) {
+    document.getElementById("catbars").innerHTML = "";
+    document.getElementById("axiswrap").style.display = "none";
+    document.getElementById("emptynote").innerHTML =
+      `<div class="empty-note">Geen gekwantificeerde kosten voor deze optie. Zie de openstaande scope hiernaast.</div>`;
+  } else {
+    document.getElementById("axiswrap").style.display = "";
+    document.getElementById("emptynote").innerHTML = "";
+    document.getElementById("catbars").innerHTML = activeCats.map(c => {
+      const segs = lines.filter(l => l.cat === c);
+      const tot = B.cat_totals[tier][c];
+      const bars = segs.map(s =>
+        `<span class="cbseg" style="width:${100*s.value/niceMax}%;background:${catColor[c]}"
+          data-name="${esc(s.name)}" data-amt="${fmt(s.value)}" data-note="${esc(s.note)}"></span>`).join("");
+      return `<div class="cbrow"><div class="cblabel">${esc(c)}</div>
+        <div class="cbtrack">${bars}</div><div class="cbtot">${fmt(tot)}</div></div>`;
+    }).join("");
+  }
+
+  const top = lines.slice(0,6);
+  const tmax = top[0] ? top[0].value : 1;
+  document.getElementById("toplines").innerHTML = top.length ? top.map(l =>
+    `<div class="tl-row" data-name="${esc(l.name)}" data-amt="${fmt(l.value)}" data-note="${esc(l.note)}">
+      <span class="tl-name">${esc(l.name)}</span>
+      <span class="tl-amt">${fmt(l.value)}</span>
+      <span class="tl-bar"><i style="width:${(100*l.value/tmax).toFixed(1)}%;background:${catColor[l.cat]}"></i></span></div>`).join("")
+    : `<div class="empty-note">Geen gekwantificeerde posten in dit scenario.</div>`;
+
+  document.getElementById("matrix").innerHTML =
+    `<table class="subtotals"><tr><th>Categorie</th>${B.tiers.map(t=>`<th>${esc(tierLabel[t])}</th>`).join("")}</tr>` +
+    B.categories.map(c => `<tr><td>${esc(c)}</td>${B.tiers.map(t => {
+      const v = B.cat_totals[t][c];
+      const tdCls = (t===tier?'active':'') + (v==="PM" ? ' pmcell' : '');
+      return `<td class="${tdCls}">${v==="PM" ? "PM" : fmt(v||0)}</td>`;
+    }).join("")}</tr>`).join("") +
+    `<tr class="total"><td>Totaal</td>${B.tiers.map(t => {
+      const vals = B.categories.map(c => B.cat_totals[t][c]);
+      const isPM = vals.some(v => v === "PM");
+      const tdCls = (t===tier?'active':'') + (isPM ? ' pmcell' : '');
+      const total = isPM ? "PM" : vals.reduce((s,v)=>s+(v||0),0);
+      return `<td class="${tdCls}">${total==="PM" ? "PM" : fmt(total)}</td>`;
+    }).join("")}</tr></table>`;
+
+  const pmDisc = `<p class="pm-disclaimer">Scope en behoefte voor deze onderdelen worden nog nader bepaald &mdash; dit kan het budget <strong>nog be&iuml;nvloeden</strong>.</p>`;
+  const pmItems = pm.length
+    ? `<div class="pm-sub">Openstaande items (pro memorie)</div><ul>${pm.map(l => `<li><strong>${esc(l.name)}</strong>${esc(l.notes[tier])}</li>`).join("")}</ul>`
+    : `<p style="font-size:13px;color:#2E7D32;margin:0;">Geen openstaande items voor dit scenario.</p>`;
+  document.getElementById("pm").innerHTML = (pm.length ? pmDisc : "") + pmItems;
+}
+
+const tip = document.createElement("div"); tip.className = "tip"; tip.style.display = "none";
+const tName = document.createElement("div"); tName.className = "tip-name";
+const tAmt  = document.createElement("div"); tAmt.className  = "tip-amt";
+const tNote = document.createElement("div"); tNote.className = "tip-note";
+tip.append(tName, tAmt, tNote); document.body.appendChild(tip);
+document.addEventListener("mousemove", e => {
+  const el = e.target.closest("[data-note]");
+  if (!el) { tip.style.display = "none"; return; }
+  tName.textContent = el.dataset.name;
+  tAmt.textContent = "€" + el.dataset.amt + "k";
+  tNote.textContent = el.dataset.note || "";
+  tNote.style.display = el.dataset.note ? "block" : "none";
+  tip.style.display = "block";
+  const pad = 14, w = tip.offsetWidth, h = tip.offsetHeight;
+  let x = e.pageX + pad, y = e.pageY + pad;
+  if (x + w > window.scrollX + window.innerWidth - 8)  x = e.pageX - w - pad;
+  if (y + h > window.scrollY + window.innerHeight - 8) y = e.pageY - h - pad;
+  tip.style.left = x + "px"; tip.style.top = y + "px";
+});
+
+document.querySelectorAll('input[name="tier"]').forEach(r =>
+  r.addEventListener("change", e => render(e.target.value)));
+render(B.tiers.find(t => document.querySelector(`input[value="${t}"]`)?.checked) || B.tiers[0]);
+</script>
+</body>
+</html>

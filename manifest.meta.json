@@ -2,9 +2,13 @@
   "_comment": "Hand-maintained repo-level metadata. The skills[] array in MANIFEST.json is NOT edited here or there - it is generated from SKILL.md frontmatter by tools/build-manifest.py. Skill names in the version history below are the names as they were at the time of that release.",
   "repository": "https://github.com/toinevl/agent-skills",
   "description": "Shared skills library for Claude, Hermes, and other agents",
-  "version": "2.0.0",
-  "last_updated": "2026-07-29",
+  "version": "2.1.0",
+  "last_updated": "2026-07-31",
   "versions": {
+    "2.1.0": {
+      "date": "2026-07-31",
+      "changes": "Added tvv-tue-business-case-dashboard (build/update interactive HTML business-case dashboards from TU/e pptx/docx source decks, with strict hidden-slide exclusion and citation-free output)."
+    },
     "1.0.0": {
       "date": "2026-07-22",
       "changes": "Initial release: roomsense-wishlist-first, grow-up, sync-skills"

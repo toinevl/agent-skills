@@ -23,6 +23,8 @@ Reusable skills for Claude, Hermes, and other agents. Each skill automates a spe
 | **tvv-arch-adr** | Draft an Architecture Decision Record | Documenting a significant architectural decision |
 | **tvv-arch-spec** | Generate a technical spec for a new feature | Before implementation starts on a non-trivial feature |
 | **tvv-check-release** | Pre-release checklist (env vars, secrets, storage, deploy verification) | Before deploying to production |
+| **tvv-azure-resource-hygiene** | Decommission replaced resources after Azure migrations | Migrating Azure resources, changing hosting model, deploying Bicep changes |
+| **tvv-tue-business-case-dashboard** | Build/update an interactive HTML business case dashboard for a TU/e initiative from real pptx/docx source decks | Asked to create, build, or refresh a TU/e business case document or dashboard |
 
 ---
 
@@ -203,10 +205,10 @@ When improving a skill:
 
 ---
 
-**Last updated:** 2026-07-29  
-**Total skills:** 11 (tvv-roomsense-wishlist-first, tvv-grow-up, tvv-sync-skills, tvv-verify-external-target,
+**Last updated:** 2026-07-31  
+**Total skills:** 13 (tvv-roomsense-wishlist-first, tvv-grow-up, tvv-sync-skills, tvv-verify-external-target,
 tvv-infra-script-authoring, tvv-ops-infra, tvv-ops-pipeline, tvv-arch-api-design, tvv-arch-adr, tvv-arch-spec,
-tvv-check-release)
+tvv-check-release, tvv-azure-resource-hygiene, tvv-tue-business-case-dashboard)
 
 > `azure-functions-deploy` and `azure-swa-deploy` were removed in `244023a` — both are
 > covered by Claude's builtin skills. This repo keeps only skills that have no builtin

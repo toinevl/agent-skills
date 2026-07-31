@@ -1,0 +1,29 @@
+{
+  "skill_name": "tvv-tue-business-case-dashboard",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Build a business case dashboard for [project] from the pptx decks in this folder. Use \"[Project] business case TUe - final.pptx\" as the authoritative deck.",
+      "expected_output": "Skill should: 1) Inventory every file in the folder, 2) Run hidden-slide detection on every pptx present, not just the named 'final' one, 3) Extract all slide text/tables tagged visible/hidden via the Read tool (not bash echo, to avoid mojibake false positives), 4) Build the dashboard's option structure only from what the deck's own visible decision slide shows — never resurrect a richer framework that only exists on hidden slides, even if the same content is visible in an older draft file in the same folder, 5) Verify every headline number against the raw slide XML if it looks broken/placeholder-like, 6) Reuse template.html's brand CSS and data contract rather than redesigning it, 7) Validate the generated JS with node --check and cross-check category sums against KPI totals before delivering, 8) Delete all temp extraction files, 9) NOT cite slide numbers anywhere in the dashboard's visible text — state facts in plain prose instead.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "The source deck has slides 3, 6, 7, and 9 marked as hidden (PowerPoint 'Hide Slide'), containing a detailed three-tier cost comparison. The visible decision slide only names the three tiers without their cost breakdowns. How should the dashboard handle the two unquantified tiers?",
+      "expected_output": "Skill should mark the two non-recommended tiers' costs as not-quantified (e.g. 'PM'/pending) rather than pulling their detailed costs from the hidden slides. It should not silently launder hidden-slide numbers back in via an older draft file that happens to contain the same content unhidden, unless that specific number is independently corroborated on a genuinely separate, currently-visible document (and even then, that should be flagged as a judgment call worth confirming with the user, not silently decided).",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "I've updated the deck to fix an earlier FTE inconsistency between two slides. Please update the dashboard to match, and going forward, do not include slide-number references anywhere — the dashboard needs to stand on its own as a document.",
+      "expected_output": "Skill should: 1) Re-run hidden-slide detection and re-extract the deck, 2) Diff against the current dashboard content and identify exactly what changed, 3) Make targeted edits rather than a wholesale rewrite, 4) Strip every '(slide N)' / 'Aannames, slide N' citation from the dashboard's visible text and tooltips, restating each fact in plain prose, 5) Keep slide citations only in the chat summary to the user (not in the artifact), 6) Re-validate JS and arithmetic after editing.",
+      "files": []
+    },
+    {
+      "id": 4,
+      "prompt": "The deck's decision slide used to list three named options (e.g. Lean/Typical/Complex) with one recommended; it's since been revised to present only the single recommended scenario, with no peer options mentioned anywhere visible. Please recreate the dashboard from the deck as it now stands.",
+      "expected_output": "Skill should remove the tier-switcher UI entirely rather than keeping a switcher with only one live option or fabricating placeholder peer options — a switcher implies a comparison the deck no longer makes. It should restructure the dashboard as a single static scenario (situation, proposal, investment, value, decision, open items) instead of patching the old multi-tier data object.",
+      "files": []
+    }
+  ]
+}
