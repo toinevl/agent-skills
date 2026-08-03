@@ -197,20 +197,24 @@
     },
     {
       "name": "tvv-sync-skills",
-      "version": "2.0.0",
+      "version": "2.0.1",
       "category": "maintenance",
       "scope": [
         "all"
       ],
-      "description": "Keep your local skills repo updated from GitHub. Pull latest, copy new skills to the local install directory, show what changed, verify all skills present.",
+      "description": "Keep your local skills repo (toinevl/agent-skills, aka \"agent-skills\" / \"agents-skills\") updated from GitHub. Pull latest, copy new skills to the local install directory, show what changed, verify all skills present.",
       "path": "tvv-sync-skills/",
       "triggers": [
         "before using skills",
         "want latest versions",
-        "keep in sync"
+        "keep in sync",
+        "agent-skills",
+        "agents-skills",
+        "update skills",
+        "sync skills"
       ],
       "created": "2026-07-22",
-      "last_updated": "2026-07-29",
+      "last_updated": "2026-08-03",
       "status": "stable"
     },
     {

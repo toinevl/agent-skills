@@ -1,13 +1,13 @@
 ---
 name: tvv-sync-skills
-description: Keep your local skills repo updated from GitHub. Pull latest, copy new skills to the local install directory, show what changed, verify all skills present.
-version: 2.0.0
+description: Keep your local skills repo (toinevl/agent-skills, aka "agent-skills" / "agents-skills") updated from GitHub. Pull latest, copy new skills to the local install directory, show what changed, verify all skills present.
+version: 2.0.1
 category: maintenance
 scope: [all]
-triggers: [before using skills, want latest versions, keep in sync]
+triggers: [before using skills, want latest versions, keep in sync, agent-skills, agents-skills, update skills, sync skills]
 status: stable
 created: '2026-07-22'
-last_updated: '2026-07-29'
+last_updated: '2026-08-03'
 tags: [skills, sync, maintenance]
 platforms: [linux, macos]
 ---
@@ -18,6 +18,13 @@ platforms: [linux, macos]
 
 Pull the latest skills from https://github.com/toinevl/agent-skills,
 install them into your local skills directory, and report what changed.
+
+**Naming note:** the repo and this skill get referenced casually as "agent-skills",
+"agents-skills", "sync skills", or just "update skills" — all of these mean this
+skill and this repo. Recognize the reference even when this skill isn't installed
+yet (chicken-and-egg: on a fresh machine/session, nothing points here until it's
+cloned once) — see the `agent-skills-repo` reference memory if using Claude Code's
+memory system.
 
 **Critical:** pulling the repo without copying to the local skills directory means the agent can't use the new skills. Both steps are required.
 
