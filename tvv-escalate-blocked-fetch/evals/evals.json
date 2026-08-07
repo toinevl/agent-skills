@@ -1,0 +1,29 @@
+{
+  "skill_name": "tvv-escalate-blocked-fetch",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I tried to WebFetch a competitor's pricing page for a comparison table but got a 403 'access blocked' response. I'm about to tell the user that page can't be checked and suggest we skip that data point.",
+      "expected_output": "Skill should: 1) Recognize the 403 is a signal about the fetch tool's fingerprint, not proof the page is unreachable, 2) Retry the identical URL with a real Playwright browser session (browser_navigate) before concluding anything, 3) Only after the Playwright attempt also fails should it consider the page unreachable and look for a public proxy or state explicitly what's unverified, 4) Not silently skip the data point or substitute a guess.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "web_url_read against a marketplace search page returned 403 bot detection. I switched to a different, less-relevant data source instead of the one the user actually asked about, without mentioning I never tried anything else.",
+      "expected_output": "Skill should flag this as the anti-pattern it documents: pivoting to a substitute source after one blocked tool, without escalating to a real browser first. Correct behavior: retry via Playwright browser_navigate on the exact same URL before switching sources, and be transparent about what was tried.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "I got past a bot-detection block using Playwright browser_navigate, and now I want to extract 20 product listings with titles and prices. My first instinct is to call browser_snapshot on the page.",
+      "expected_output": "Skill should warn that browser_snapshot on a content-heavy listings/search page can itself exceed the tool's max-output-token limit, and instead recommend browser_run_code_unsafe with page.evaluate(...) to extract only the structured fields needed (title/price/link) as JSON, keeping only derived data in context.",
+      "files": []
+    },
+    {
+      "id": 4,
+      "prompt": "A site returned a CAPTCHA even inside a real Playwright browser session, after a raw fetch was also blocked. What should I do next?",
+      "expected_output": "Skill should recognize this as the case where escalation has been exhausted: both the raw fetch and the real browser were blocked. At that point it's correct to conclude the source is genuinely unreachable, look for a public proxy carrying the same information (per tvv-verify-external-target) before falling back to trained knowledge, and state explicitly and per-value what was not verified.",
+      "files": []
+    }
+  ]
+}

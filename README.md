@@ -25,6 +25,7 @@ Reusable skills for Claude, Hermes, and other agents. Each skill automates a spe
 | **tvv-check-release** | Pre-release checklist (env vars, secrets, storage, deploy verification) | Before deploying to production |
 | **tvv-azure-resource-hygiene** | Decommission replaced resources after Azure migrations | Migrating Azure resources, changing hosting model, deploying Bicep changes |
 | **tvv-tue-business-case-dashboard** | Build/update an interactive HTML business case dashboard for a TU/e initiative from real pptx/docx source decks | Asked to create, build, or refresh a TU/e business case document or dashboard |
+| **tvv-escalate-blocked-fetch** | Escalate to a real Playwright browser session when a raw HTTP fetch (WebFetch/web_url_read/curl) is blocked | A fetch returns 403/bot-detection/CAPTCHA and you're about to declare the site unreachable or switch to a substitute source |
 
 ---
 
@@ -205,10 +206,10 @@ When improving a skill:
 
 ---
 
-**Last updated:** 2026-07-31  
-**Total skills:** 13 (tvv-roomsense-wishlist-first, tvv-grow-up, tvv-sync-skills, tvv-verify-external-target,
+**Last updated:** 2026-08-07  
+**Total skills:** 14 (tvv-roomsense-wishlist-first, tvv-grow-up, tvv-sync-skills, tvv-verify-external-target,
 tvv-infra-script-authoring, tvv-ops-infra, tvv-ops-pipeline, tvv-arch-api-design, tvv-arch-adr, tvv-arch-spec,
-tvv-check-release, tvv-azure-resource-hygiene, tvv-tue-business-case-dashboard)
+tvv-check-release, tvv-azure-resource-hygiene, tvv-tue-business-case-dashboard, tvv-escalate-blocked-fetch)
 
 > `azure-functions-deploy` and `azure-swa-deploy` were removed in `244023a` — both are
 > covered by Claude's builtin skills. This repo keeps only skills that have no builtin
